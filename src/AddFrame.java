@@ -1,5 +1,7 @@
 import java.awt.Event.*;
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
 public class AddFrame extends javax.swing.JFrame {
 
@@ -147,9 +149,7 @@ public class AddFrame extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
         // TODO add your handling code here:
-        TeacherFrame teacherFrame = new TeacherFrame();
         dispose();
-        teacherFrame.setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -160,15 +160,33 @@ public class AddFrame extends javax.swing.JFrame {
         String email = txtEmail.getText();
         String cno = txtContactNumber.getText();
         dbHandler db = new dbHandler();
-        try{
+        
+        validationHandler vh = new validationHandler();
+        
+        if(!(vh.validateName(name))){
+            txtStudentName.setText("");
+            txtStudentName.requestFocus();
+        }
+        else if(!(vh.validateEmail(email))){
+            txtEmail.setText("");
+            txtEmail.requestFocus();
+        }
+        else if(!vh.validateContact(cno)){
+            txtContactNumber.setText("");
+            txtContactNumber.requestFocus();            
+        }
+        else{
+            try{
                 db.addStudent(Integer.parseInt(r), name, email, Long.parseLong(cno));
-        }
-        catch(NumberFormatException ne){
-                JOptionPane.showMessageDialog(new JDialog(), "invalid rno");
-        }
-
-        txtRollNo.setText("");
-        txtRollNo.requestFocus();
+                txtStudentName.setText("");
+                txtEmail.setText("");
+                txtContactNumber.setText("");
+                txtRollNo.setText("");
+            }
+            catch(NumberFormatException ne){
+                JOptionPane.showMessageDialog(new JDialog(), ne);
+            }
+        }        
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**

@@ -157,6 +157,9 @@ public class LoginFrame extends javax.swing.JFrame {
             studentFrame.setVisible(true);
             }   
         }
+        else{
+            JOptionPane.showMessageDialog(new JDialog(), "Invalid username or password");
+        }
          
     }//GEN-LAST:event_btnLoginActionPerformed
 
