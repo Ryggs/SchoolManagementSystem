@@ -8,6 +8,8 @@ public class AddFrame extends javax.swing.JFrame {
      */
     public AddFrame() {
         initComponents();
+        setTitle("Student Management System/Teacher/Add Student");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**

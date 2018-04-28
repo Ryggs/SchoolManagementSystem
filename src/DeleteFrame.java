@@ -6,6 +6,8 @@ public class DeleteFrame extends javax.swing.JFrame {
      */
     public DeleteFrame() {
         initComponents();
+        setTitle("Student Management System/Teacher/Delete Student");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**

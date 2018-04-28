@@ -13,6 +13,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
     public LoginFrame() {
         initComponents();
+        setTitle("Student Management System");
         ButtonGroup bg = new ButtonGroup();
         bg.add(rbStudent);
         bg.add(rbTeacher);
@@ -130,9 +131,15 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        int id = Integer.parseInt(txtId.getText());
+        
+        String id = txtId.getText();
         String pwd = txtPassword.getText();
-        //JOptionPane.showMessageDialog(new JDialog(),id+pwd);
+        
+        if(id.length()==0 || pwd.length()== 0){
+            
+            JOptionPane.showMessageDialog(new JDialog(), "Enter Username and Password");
+        }
+        
         dbHandler  db = new dbHandler();
         
         

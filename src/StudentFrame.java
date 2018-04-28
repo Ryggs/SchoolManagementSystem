@@ -15,6 +15,7 @@ public class StudentFrame extends javax.swing.JFrame {
      */
     public StudentFrame() {
         initComponents();
+        setTitle("Student Management System/Student");
     }
 
     /**

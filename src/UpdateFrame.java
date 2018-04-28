@@ -8,6 +8,8 @@ public class UpdateFrame extends javax.swing.JFrame {
      */
     public UpdateFrame() {
         initComponents();
+        setTitle("Student Management System/Teacher/Update Student");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**

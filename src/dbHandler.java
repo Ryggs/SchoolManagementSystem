@@ -104,65 +104,78 @@ public class dbHandler {
 		}
 	}
         
-        public boolean teacherLogin(int id, String pwd)
+        public boolean teacherLogin(String id, String pwd)
         {
+            int id2;
             Connection conn;
             try{
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
-			
-                        
-                        String s2 = "select * from teacherLogin where id=? and password=?";
-                        PreparedStatement stmt = conn.prepareStatement(s2);
-                      
-                        //stmt.setString(1, type);
-			stmt.setInt(1,id);
-                        stmt.setString(2,pwd);
-                        
-			ResultSet rs = stmt.executeQuery();
-			
-			if(rs.next())
-			{
-                            //JOptionPane.showMessageDialog(new JDialog(),"success");
-                            return true;
-			}
-			rs.close();
-			conn.close();
-		}
-		catch(SQLException e){
-			JOptionPane.showMessageDialog(new JDialog(),"issue"+e);
-		}
+                DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
+
+
+                String s2 = "select * from teacherLogin where id=? and password=?";
+                PreparedStatement stmt = conn.prepareStatement(s2);
+
+                try {
+                    id2 = Integer.parseInt(id);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(new JDialog(), "Invalid Username");
+                    return false;
+                }
+                
+                stmt.setInt(1,id2);
+                stmt.setString(2,pwd);
+
+                ResultSet rs = stmt.executeQuery();
+
+                if(rs.next())
+                {
+                    //JOptionPane.showMessageDialog(new JDialog(),"success");
+                    return true;
+                }
+                rs.close();
+                conn.close();
+            }
+            catch(SQLException e){
+                    JOptionPane.showMessageDialog(new JDialog(),"Invalid Username or Passsword ");
+            }
         return false;
         }
         
-        public boolean studentLogin(int id, String pwd)
+        public boolean studentLogin(String id, String pwd)
         {
+            int id2;
             Connection conn;
             try{
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
-			
-                        
-                        String s2 = "select * from studentLogin where id=? and password=?";
-                        PreparedStatement stmt = conn.prepareStatement(s2);
-                      
-                        //stmt.setString(1, type);
-			stmt.setInt(1,id);
-                        stmt.setString(2,pwd);
-                        
-			ResultSet rs = stmt.executeQuery();
-			
-			if(rs.next())
-			{
-                           // JOptionPane.showMessageDialog(new JDialog(),"success");
-                            return true;
-			}
-			rs.close();
-			conn.close();
-		}
-		catch(SQLException e){
-			JOptionPane.showMessageDialog(new JDialog(),"issue"+e);
-		}
+                DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+                conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
+
+
+                String s2 = "select * from studentLogin where id=? and password=?";
+                PreparedStatement stmt = conn.prepareStatement(s2);
+
+                try {
+                    id2 = Integer.parseInt(id);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(new JDialog(), "Invalid Username");
+                    return false;
+                }
+                
+                stmt.setInt(1,id2);
+                stmt.setString(2,pwd);
+
+                ResultSet rs = stmt.executeQuery();
+
+                if(rs.next())
+                {
+                    return true;
+                }
+                rs.close();
+                conn.close();
+            }
+            catch(SQLException e){
+                    JOptionPane.showMessageDialog(new JDialog(),"issue"+e);
+            }
         return false;
         }
 }
