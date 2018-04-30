@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class TeacherFrame extends javax.swing.JFrame {
@@ -15,6 +16,34 @@ public class TeacherFrame extends javax.swing.JFrame {
         initComponents();
         setTitle("Student Management System/Teacher");
         
+    }
+    
+    public ArrayList<User> userList(){
+        ArrayList<User> userList = new ArrayList<>();
+        try{
+            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+            Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
+            
+            String s2 = "select * from students";
+            Statement s1 = conn.createStatement();
+
+            ResultSet rs = s1.executeQuery(s2);
+            
+            User user;
+            
+            while(rs.next())
+            {   
+                user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getLong(4));
+                userList.add(user);
+            }
+            rs.close();
+            conn.close();
+        }
+        catch(SQLException e){
+                JOptionPane.showMessageDialog(new JDialog(),"issue"+e);
+        }
+        
+        return userList;
     }
 
     @SuppressWarnings("unchecked")
@@ -65,39 +94,12 @@ public class TeacherFrame extends javax.swing.JFrame {
         jTable1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Roll No.", "Name", "Email", "Contact"
             }
         ));
-        jTable1.setColumnSelectionAllowed(true);
         jScrollPane2.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setPreferredWidth(5);
@@ -163,31 +165,16 @@ public class TeacherFrame extends javax.swing.JFrame {
 
     private void btnViewRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewRecordActionPerformed
         // TODO add your handling code here:
-        Connection conn;
-        StringBuffer sb = new StringBuffer();
-        try{
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
-
-            Statement s1 = conn.createStatement();
-            String s2 = "select * from students";
-
-            ResultSet rs = s1.executeQuery(s2);
-
-            int i=0;
-            while(rs.next())
-            {   
-                jTable1.getModel().setValueAt(rs.getInt(1), i, 0);
-                jTable1.getModel().setValueAt(rs.getString(2), i, 1);
-                jTable1.getModel().setValueAt(rs.getString(3), i, 2);
-                jTable1.getModel().setValueAt(rs.getLong(4), i, 3);
-                i++;
-            }
-            rs.close();
-            conn.close();
-        }
-        catch(SQLException e){
-                JOptionPane.showMessageDialog(new JDialog(),"issue"+e);
+        ArrayList<User> list = userList();
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
+        Object[] row = new Object[4];
+        for (int i = 0; i < list.size(); i++) {
+            row[0]=list.get(i).getRoll();
+            row[1]=list.get(i).getName();
+            row[2]=list.get(i).getEmail();
+            row[3]=list.get(i).getContact();
+            model.addRow(row);
         }
     }//GEN-LAST:event_btnViewRecordActionPerformed
 
