@@ -1,15 +1,61 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 
 public class UpdateFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form UpdateFrame
-     */
     public UpdateFrame() {
         initComponents();
         setTitle("Student Management System/Teacher/Update Student");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+               
+        txtRollNo.getDocument().addDocumentListener(new DocumentListener() {
+            
+
+            @Override
+            public void insertUpdate(DocumentEvent de) {
+                try{
+                    DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+                    Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","abc123");
+
+                    String s2 = "select * from students";
+                    Statement s1 = conn.createStatement();
+                    ResultSet rs = s1.executeQuery(s2);
+                    int rollno = Integer.parseInt(txtRollNo.getText());
+                    
+                    while(rs.next())
+                    {   
+                        if(rs.getInt(1)==rollno){
+                            txtStudentName.setText(rs.getString(2));
+                            txtEmail.setText(rs.getString(3));
+                            txtContactNumber.setText(Long.toString(rs.getLong(4)));
+                        }
+                    }
+                    rs.close();
+                    conn.close();
+                }
+                catch(SQLException e){
+                        JOptionPane.showMessageDialog(new JDialog(),"issue"+e);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent de) {
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent de) {
+            //Plain text components don't fire these events.
+            }
+        });
     }
 
     /**
@@ -181,18 +227,33 @@ public class UpdateFrame extends javax.swing.JFrame {
         String email = txtEmail.getText();
         String cno = txtContactNumber.getText();
         dbHandler db = new dbHandler();
-        try{
-            db.updateStudent(Integer.parseInt(r), name, email, Long.parseLong(cno));
+        
+        validationHandler vh = new validationHandler();
+        
+        if(!(vh.validateName(name))){
             txtStudentName.setText("");
+            txtStudentName.requestFocus();
+        }
+        if(!(vh.validateEmail(email))){
             txtEmail.setText("");
+            txtEmail.requestFocus();
+        }
+        if(!vh.validateContact(cno)){
             txtContactNumber.setText("");
+            txtContactNumber.requestFocus();            
         }
-        catch(NumberFormatException ne){
-                JOptionPane.showMessageDialog(new JDialog(), "invalid rno");
-                
-        }
-        txtRollNo.setText("");
-        txtRollNo.requestFocus();
+        else{
+            try{
+                db.updateStudent(Integer.parseInt(r), name, email, Long.parseLong(cno));
+                txtStudentName.setText("");
+                txtEmail.setText("");
+                txtContactNumber.setText("");
+                txtRollNo.setText("");
+            }
+            catch(NumberFormatException ne){
+                JOptionPane.showMessageDialog(new JDialog(), ne);
+            }
+        } 
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**

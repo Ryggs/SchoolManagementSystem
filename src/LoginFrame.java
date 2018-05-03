@@ -1,10 +1,3 @@
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -145,20 +138,24 @@ public class LoginFrame extends javax.swing.JFrame {
         
         if(rbTeacher.isSelected()){
             if(db.teacherLogin(id,pwd)){
-            TeacherFrame teacherFrame = new TeacherFrame();
-            dispose();
-            teacherFrame.setVisible(true);
-            }   
+                TeacherFrame teacherFrame = new TeacherFrame();
+                dispose();
+                teacherFrame.setVisible(true);
+            } 
+            else
+                JOptionPane.showMessageDialog(new JDialog(), "Invalid username or password");
         }
         else if(rbStudent.isSelected()){
             if(db.studentLogin(id,pwd)){
-            StudentFrame studentFrame = new StudentFrame();
-            dispose();
-            studentFrame.setVisible(true);
+                StudentFrame studentFrame = new StudentFrame();
+                dispose();
+                studentFrame.setVisible(true);
             }   
+            else
+                JOptionPane.showMessageDialog(new JDialog(), "Invalid username or password");
         }
         else{
-            JOptionPane.showMessageDialog(new JDialog(), "Invalid username or password");
+            JOptionPane.showMessageDialog(new JDialog(), "Please specify if you are a Student or a Teacher");
         }
          
     }//GEN-LAST:event_btnLoginActionPerformed

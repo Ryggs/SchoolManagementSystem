@@ -184,7 +184,7 @@ public class AddFrame extends javax.swing.JFrame {
                 txtRollNo.setText("");
             }
             catch(NumberFormatException ne){
-                JOptionPane.showMessageDialog(new JDialog(), ne);
+                JOptionPane.showMessageDialog(new JDialog(), "Invalid roll number");
             }
         }        
     }//GEN-LAST:event_btnSaveActionPerformed
